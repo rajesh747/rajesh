@@ -47,8 +47,8 @@ logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n
 ###########################################################################
 
 oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
-#oreg_auth_user=
-#oreg_auth_password=
+oreg_auth_user=cizquierdo@sorint.it
+oreg_auth_password=Sorint1234
 
 # For Operator Framework Images
 #openshift_additional_registry_credentials=
@@ -63,10 +63,10 @@ openshift_enable_unsupported_configurations=True
 ### OpenShift Master Vars
 ###########################################################################
 
-#openshift_master_api_port=
-#openshift_master_console_port=
+openshift_master_api_port=443
+openshift_master_console_port=443
 
-#Default:  openshift_master_cluster_method=native
+openshift_master_cluster_method=native
 openshift_master_cluster_hostname=loadbalancer1.f7ae.internal
 openshift_master_cluster_public_hostname=loadbalancer.f7ae.example.opentlc.com
 openshift_master_default_subdomain=apps.f7ae.example.opentlc.com
@@ -215,7 +215,7 @@ openshift_hosted_registry_enforcequota=true
 
 openshift_hosted_registry_storage_kind=nfs
 openshift_hosted_registry_storage_access_modes=['ReadWriteMany']
-openshift_hosted_registry_storage_nfs_directory=/nfs/srv
+openshift_hosted_registry_storage_nfs_directory=/srv/nfs
 openshift_hosted_registry_storage_nfs_options='*(rw,root_squash)'
 openshift_hosted_registry_storage_volume_name=registry
 openshift_hosted_registry_storage_volume_size=20Gi
