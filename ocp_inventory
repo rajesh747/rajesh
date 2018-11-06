@@ -46,8 +46,15 @@ logrotate_scripts=[{"name": "syslog", "path": "/var/log/cron\n/var/log/maillog\n
 ### OpenShift Registries Locations
 ###########################################################################
 
-oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
-openshift_examples_registryurl=registry.access.redhat.com/openshift3/ose-${component}:${version}
+#oreg_url=registry.access.redhat.com/openshift3/ose-${component}:${version}
+#openshift_examples_registryurl=registry.access.redhat.com/openshift3/ose-${component}:${version}
+oreg_url=registry.redhat.io/openshift3/ose-${component}:${version}
+openshift_examples_registryurl=registry.redhat.io/openshift3/ose-${component}:${version}
+oreg_auth_user=cizquierdo@sorint.it
+oreg_auth_password=eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiI3MmYwMzQwZjZiZTg0MWVjOWEyZTQ4NmIxYTMyN2NkYyJ9.rH6OW5GlnT3Ko-c2V6cpBLzxSVubibADs3qDkFzjSCDFdbagIfhFbLoaW0gQZiRR2t783Ac37V4A85SL0tjY1t-o1LQttN2h3pnBg7et1LRzQr8xYSlCoJUoVSi71oTLH_xy39eIl-M6s7IjyMS9zACEib-yticdxpZc6EOYjc2xFpdJmk9mxSCWp6B99mQBycEbcBYK4ct5cZhO83-JvymGw2WrBPH3mZQpnZ7rFLmmJWiFgd52foCZXjB_yKMktStopEdAUA95ws_fqQuLXOxiQam93ybSBGnDdt3qPgnRWXQRtXn4BW-XFH9SbWjlta_JX4aW_Lu3Mvd4lt_esFTqkC8RaRTSm3UCI8MfAAEWaHYS33KT-pNdegDg8wjXRG8gyAxtJ9UIZY4qXWaE5ml4eeOf0iBU3ghMGpE6wzGHbBlThwejIxOugPEElwAwkpncmQf67WPM2yKWKoRjtmo0bm42nLtxSsDeftsme2lQCshEzR2OvbablJiEyftQi4vYu8Nh7RBOtfDrOLEZpvWsClbGfYAGb0D2659v5daDSNKiL737yODDvxM2Pq5-6dqDh0vByRtDFcYLbsJ-w0IEt5IWz2vPitsPmFX8M6kRQ3VK7a_LwGZgr-gHbQczyTjXAPPqOdKeao-Ysi4lwzc23NjUIpAyzE9ux7-e4gE
+
+
+
 # For Operator Framework Images
 #openshift_additional_registry_credentials=
 
