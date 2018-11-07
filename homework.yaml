@@ -31,29 +31,29 @@
     - name: Generate Inventory script
       shell: "sed \"s/GUID_UNDEFINED/$GUID/g\" ocp_inventory.tmp > ocp_inventory"
 
-- name: Execute the openshift-ansible prerequisites
-  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+#- name: Execute the openshift-ansible prerequisites
+#  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
 
-- name: Execute the openshift-ansible Deployer
-  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+#- name: Execute the openshift-ansible Deployer
+#  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
 
-- name: Verify OpenShift Cluster
-  hosts: masters[0]
-  tasks:
-    - name: copy the .kube directory from master1 to your bastion
-      fetch:
-        src: /root/.kube/config
-        dest: /root/.kube/config
-        flat: yes
+#- name: Verify OpenShift Cluster
+#  hosts: masters[0]
+#  tasks:
+#    - name: copy the .kube directory from master1 to your bastion
+#      fetch:
+#        src: /root/.kube/config
+#        dest: /root/.kube/config
+#        flat: yes
 
-- name: Post installation configuration
-  hosts: localhost
-  tasks:
-    - name: make sure you are system:admin
-      shell: oc whoami | grep system:admin
+#- name: Post installation configuration
+#  hosts: localhost
+#  tasks:
+#    - name: make sure you are system:admin
+#      shell: oc whoami | grep system:admin
 
-- name: Create PVs for Users
-  import_playbook: ./pv_preparation.yml
+#- name: Create PVs for Users
+#  import_playbook: ./pv_preparation.yml
   
 # - name: Create 25 definitions files for PVs 5G size
 #   hosts: localhost
