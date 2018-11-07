@@ -11,12 +11,12 @@
         mode: 0777
         owner: nfsnobody
         group: nfsnobody
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d
     - name: add to exportfs
       lineinfile:
         path: /etc/exports.d/openshift-ansible.exports
         line: '"{{ base_dir }}/{{ item }} *(rw,root_squash)"'
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d
     - name: restart nfsd
       service:
         name: nfs
@@ -52,7 +52,7 @@
             nfs:
               path: "{{ base_dir }}/{{ item }}"
               server: "{{ nfs_server }}"
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d
     - name: ocp pv creation
       shell: /bin/oc create -f {{ templates_dir }}/pv_create_{{ item }}
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d

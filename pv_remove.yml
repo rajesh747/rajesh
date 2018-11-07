@@ -9,7 +9,7 @@
       file:
         path: "{{ templates_dir }}/pv_create_{{ item }}"
         state: absent
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d
 
 - name: remove folders and entries in nfs server
   hosts: nfs
@@ -20,13 +20,13 @@
       file:
         name: "{{ base_dir }}/{{ item }}/"
         state: absent
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d
     - name: remove from exports
       lineinfile:
         path: /etc/exports.d/openshift-ansible.exports
         line: '"{{ base_dir }}/{{ item }} *(rw,root_squash)"'
         state: absent
-      with_sequence: count=100 format=pv%04d
+      with_sequence: count=50 format=pv%04d
     - name: restart nfsd
       service:
         name: nfs
