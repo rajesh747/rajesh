@@ -1,0 +1,25 @@
+---
+- name: configure openshift CICD project and objects
+  hosts: localhost
+  tasks: 
+  - name: create project jenkins
+    shell: oc new-project cicd-dev
+
+  - name: create project dev
+
+  - name: create project test
+
+  - name: create project prod
+
+  - name: create project tasks-build
+
+  - name: deploy jenkins app
+
+  - name: configure jenkins plug-in
+
+  - name: configure dev labels
+
+  - name: configure test labels
+
+  - name: configure prod labels
+

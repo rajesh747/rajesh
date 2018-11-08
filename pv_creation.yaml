@@ -1,33 +1,10 @@
 ---
-- name: provision a number of PV for the OCP
-  hosts: nfs
-  vars:
-    base_dir: /srv/nfs
-  tasks:
-    - name: create dirs
-      file:
-        name: "{{ base_dir }}/{{ item }}"
-        state: directory
-        mode: 0777
-        owner: nfsnobody
-        group: nfsnobody
-      with_sequence: count=50 format=pv%04d
-    - name: add to exportfs
-      lineinfile:
-        path: /etc/exports.d/openshift-ansible.exports
-        line: '"{{ base_dir }}/{{ item }} *(rw,root_squash)"'
-      with_sequence: count=50 format=pv%04d
-    - name: restart nfsd
-      service:
-        name: nfs
-        state: restarted
-
 - name: create pv inside openshift
-  hosts: masters[0]
+  hosts: localhost
   vars:
      templates_dir: /root/config_files
      base_dir: /srv/nfs
-     nfs_server: support1.f7ae.internal
+     nfs_server: support1.{{ lookup('env','GUID') }}.internal
      pv_size: 10Gi
   tasks:
     - name: create pv config files
@@ -48,6 +25,7 @@
             accessModes:
               - ReadWriteOnce
               - ReadWriteMany
+              - ReadOnly
             persistentVolumeReclaimPolicy: Retain
             nfs:
               path: "{{ base_dir }}/{{ item }}"

@@ -11,9 +11,8 @@
     - name: docker restart
       shell: systemctl restart docker
 
-#- name: Verify NFS Shared Volumes on Hosts
-#  hosts: nfs
-#  tasks:
+- name: Verify NFS Shared Volumes on Hosts
+  import_playbook: ./nfs_preparation.yaml
 
 #- name: Install packages and config auth
 #  hosts: localhost
@@ -25,43 +24,39 @@
 #          - ????
 #        state: present
 
-- name: Generate Inventory Hosts File
-  hosts: localhost
-  tasks:
-    - name: Generate Inventory script
-      shell: "sed \"s/GUID_UNDEFINED/$GUID/g\" ocp_inventory.tmp > ocp_inventory"
-
-#- name: Execute the openshift-ansible prerequisites
-#  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
-
-#- name: Execute the openshift-ansible Deployer
-#  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
-
-#- name: Verify OpenShift Cluster
-#  hosts: masters[0]
-#  tasks:
-#    - name: copy the .kube directory from master1 to your bastion
-#      fetch:
-#        src: /root/.kube/config
-#        dest: /root/.kube/config
-#        flat: yes
-
-#- name: Post installation configuration
+#- name: Generate Inventory Hosts File
 #  hosts: localhost
 #  tasks:
-#    - name: make sure you are system:admin
-#      shell: oc whoami | grep system:admin
+#    - name: Generate Inventory script
+#      shell: "sed \"s/GUID_UNDEFINED/$GUID/g\" ocp_inventory.tmp > ocp_inventory"
 
-#- name: Create PVs for Users
-#  import_playbook: ./pv_preparation.yml
+- name: Execute the openshift-ansible prerequisites
+  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/prerequisites.yml
+
+- name: Execute the openshift-ansible Deployer
+  import_playbook: /usr/share/ansible/openshift-ansible/playbooks/deploy_cluster.yml
+
+- name: Verify OpenShift Cluster
+  hosts: masters[0]
+  tasks:
+    - name: copy the .kube directory from master1 to your bastion
+      fetch:
+        src: /root/.kube/config
+        dest: /root/.kube/config
+        flat: yes
+
+- name: Create NFS folders
+  import_playbook: ./nfs_preparation.yaml
+
+- name: Post installation configuration
+  hosts: localhost
+  tasks:
+    - name: make sure you are system:admin
+      shell: oc whoami | grep system:admin
+
+- name: create PVs in the cluster
+  import_playbook: ./pv_creation.yaml
   
-# - name: Create 25 definitions files for PVs 5G size
-#   hosts: localhost
-
-# - name: Create 25 definitions files for PVs 10G size
-
-# - name: Create all PVs from definitions files
-
 # - name: Fix NFS Persistent Volume Recycling
 
 # - name: Smoke Test

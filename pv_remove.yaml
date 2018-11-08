@@ -16,7 +16,7 @@
   vars:
     base_dir: /srv/nfs
   tasks:
-    - name: create dirs
+    - name: remove dirs
       file:
         name: "{{ base_dir }}/{{ item }}/"
         state: absent
@@ -31,3 +31,18 @@
       service:
         name: nfs
         state: restarted
+
+- name: remove logging metrics and registry files in nfs server
+  hosts: nfs
+  vars:
+    base_dir: /srv/nfs
+  tasks:
+    - name: 
+      file:
+        name: "{{ base_dir }}/{{ item }}/"
+        state: absent
+      with_items:
+        - registry
+        - logging
+        - metrics
+

@@ -1,4 +1,4 @@
 ---
 - import_playbook: /usr/share/ansible/openshift-ansible/playbooks/adhoc/uninstall.yml
-- import_playbook: ./pv_remove.yml
-- import_playbook: ./registry_conf_remove.yml
+- import_playbook: ./pv_remove.yaml
+- import_playbook: ./registry_conf_remove.yaml
