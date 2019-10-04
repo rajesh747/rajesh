@@ -1,0 +1,36 @@
+---
+- name: create pv inside openshift
+  hosts: localhost
+  vars:
+     templates_dir: /root/config_files
+     base_dir: /srv/nfs
+     nfs_server: support1.{{ lookup('env','GUID') }}.internal
+     pv_size: 10Gi
+  tasks:
+    - name: create pv config files
+      blockinfile:
+        path: "{{ templates_dir }}/pv_create_{{ item }}"
+        create: yes
+        mode: 0400
+        owner: root
+        group: root
+        block: |
+          apiVersion: v1
+          kind: PersistentVolume
+          metadata:
+            name: "{{ item }}"
+          spec:
+            capacity:
+              storage: "{{ pv_size }}"
+            accessModes:
+              - ReadWriteOnce
+              - ReadWriteMany
+              - ReadOnly
+            persistentVolumeReclaimPolicy: Retain
+            nfs:
+              path: "{{ base_dir }}/{{ item }}"
+              server: "{{ nfs_server }}"
+      with_sequence: count=50 format=pv%04d
+    - name: ocp pv creation
+      shell: /bin/oc create -f {{ templates_dir }}/pv_create_{{ item }}
+      with_sequence: count=50 format=pv%04d
