@@ -1,5 +1,7 @@
 = OpenShift Advanced Development Homework Template
 
+__This is a fork of the original [HW repo](https://github.com/redhat-gpte-devopsautomation/advdev_homework_template)__
+
 [NOTE]
 If you are looking for the 40h homework (Parksmap etc.) please checkout branch `40h`.
 
