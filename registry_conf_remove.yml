@@ -1,8 +1,0 @@
----
-- name: remove login config
-  hosts: nodes
-  tasks:
-    - name: files remove
-      file:
-        state: absent
-        path: /var/lib/origin/.docker/config.json
