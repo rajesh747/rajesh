@@ -21,9 +21,13 @@ podTemplate(
 
     // Other vars
     def sonar_url = "http://sonarqube-gpte-hw-cicd.apps.na311.openshift.opentlc.com"
-    #def nexus_url = "http://nexus3-gpte-hw-cicd.apps.na311.openshift.opentlc.com/repository/maven-releases/"
     def nexus_url = "http://nexus3.gpte-hw-cicd.svc.cluster.local:8081/repository/maven-all-public/"
+    def nexus_registry = "nexus3-registry.gpte-hw-cicd.svc.cluster.local:5000"
     def nexus_svc = ""
+
+    // Set project names
+    dev devProject = "${GUID}-tasks-dev"
+    def devProject = "${GUID}-tasks-prod"
 
     // Checkout Source Code.
     stage('Checkout Source') {
@@ -87,27 +91,69 @@ podTemplate(
 
       // Build the OpenShift Image in OpenShift and tag it.
       stage('Build and Tag OpenShift Image') {
-        echo "Building OpenShift container image tasks:${devTag}"
-
-        // TBD: Build Image, tag Image
+	steps {
+          echo "Building OpenShift container image tasks:${devTag}"
+	  script {
+            // TBD: Build Image, tag Image
+    	    openshift.withCluster() {
+              openshift.withProject("${devProject}") {
+	        // build inside project
+	        openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
+	        // tag image
+	        openshift.tag("tasks:latest", "tasks:${devTag}")
+	      }
+	    }
+          }
+        }
       }
 
       // Deploy the built image to the Development Environment.
       stage('Deploy to Dev') {
-        echo "Deploying container image to Development Project"
+	steps {
+          echo "Deploying container image to Development Project"
+	  script {
+            // TBD: Deploy to development Project
+            //      Set Image, Set VERSION
+            //      Make sure the application is running and ready before proceeding
+	    openshift.withCluster() {
+              openshift.withProject("${devProject}") {
+	        openshift.set("image", "dc/tasks", "tasks=docker-registry.default.svc:5000/${devProject}/tasks:${devTag}")
+                openshift.selector('configmap', 'tasks-config').delete()
+	        def configmap = openshift.create('configmap', 'tasks-config', '--from-file=./configuration/application-users.properties', '--from-file=./configuration/application-roles.properties' )
+	        // Deploy the development application.
+                openshift.selector("dc", "tasks").rollout().latest();
 
-        // TBD: Deploy to development Project
-        //      Set Image, Set VERSION
-        //      Make sure the application is running and ready before proceeding
+                // Wait for application to be deployed
+                def dc = openshift.selector("dc", "tasks").object()
+                def dc_version = dc.status.latestVersion
+                def rc = openshift.selector("rc", "tasks-${dc_version}").object()
+
+                echo "Waiting for ReplicationController tasks-${dc_version} to be ready"
+                while (rc.spec.replicas != rc.status.readyReplicas) {
+                  sleep 5
+                  rc = openshift.selector("rc", "tasks-${dc_version}").object()
+                }
+	      }
+	    }
+          }
+	}
       }
 
       // Copy Image to Nexus container registry
       stage('Copy Image to Nexus container registry') {
-        echo "Copy image to Nexus container registry"
-
-        // TBD: Copy image to Nexus container registry
-
-        // TBD: Tag the built image with the production tag.
+	steps {
+          echo "Copy image to Nexus container registry"
+          script {
+            // TBD: Copy image to Nexus container registry
+	    sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:redhat docker://docker-registry.default.svc.cluster.local:5000/${devProject}/tasks:${devTag} docker://${nexus_registry}/tasks:${devTag}"
+            // TBD: Tag the built image with the production tag.
+	    openshift.withCluster() {
+              openshift.withProject("${prodProject}") {
+                openshift.tag("${devProject}/tasks:${devTag}", "${devProject}/tasks:${prodTag}")
+	      }
+	    }
+	  }
+	}
       }
 
       // Blue/Green Deployment into Production
@@ -120,6 +166,7 @@ podTemplate(
         //      Set Image, Set VERSION
         //      Deploy into the other application
         //      Make sure the application is running and ready before proceeding
+
       }
 
       stage('Switch over to new Version') {
