@@ -21,7 +21,8 @@ podTemplate(
 
     // Other vars
     def sonar_url = "http://sonarqube-gpte-hw-cicd.apps.na311.openshift.opentlc.com"
-    def nexus_url = "http://nexus3-gpte-hw-cicd.apps.na311.openshift.opentlc.com/repository/maven-releases/"
+    #def nexus_url = "http://nexus3-gpte-hw-cicd.apps.na311.openshift.opentlc.com/repository/maven-releases/"
+    def nexus_url = "http://nexus3.gpte-hw-cicd.svc.cluster.local:8081/repository/maven-all-public/"
     def nexus_svc = ""
 
     // Checkout Source Code.
@@ -81,6 +82,7 @@ podTemplate(
         echo "Publish to Nexus"
 
         // TBD: Publish to Nexus
+	sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::${nexus_url}
       }
 
       // Build the OpenShift Image in OpenShift and tag it.
