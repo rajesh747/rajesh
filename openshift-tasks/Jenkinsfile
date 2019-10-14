@@ -28,7 +28,7 @@ podTemplate(
 
     // Set project names
     def devProject = "${GUID}-tasks-dev"
-    def devProject = "${GUID}-tasks-prod"
+    def prodProject = "${GUID}-tasks-prod"
 
     // Checkout Source Code.
     stage('Checkout Source') {
