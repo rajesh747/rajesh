@@ -22,7 +22,7 @@ podTemplate(
     // Other vars
     def sonar_url = "http://sonarqube-gpte-hw-cicd.apps.na311.openshift.opentlc.com"
     def sonar_svc = "http://sonarqube.gpte-hw-cicd.svc.cluster.local:9000"
-    def nexus_url = "http://nexus3.gpte-hw-cicd.svc.cluster.local:8081/repository/maven-all-public/"
+    def nexus_url = "http://nexus3.gpte-hw-cicd.svc.cluster.local:8081/repository/releases"
     def nexus_registry = "nexus3-registry.gpte-hw-cicd.svc.cluster.local:5000"
     def nexus_registry_svc = "https://nexus3-registry.gpte-hw-cicd.svc.cluster.local:5000"
 
