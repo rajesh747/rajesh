@@ -145,7 +145,7 @@ podTemplate(
 	  sh "skopeo copy \
 	  --src-tls-verify=false --dest-tls-verify=false \
 	  --src-creds openshift:\$(oc whoami -t) \
-	  --dest-creds --admin:redhat \
+	  --dest-creds admin:redhat \
 	  docker://docker-registry.default.svc.cluster.local:5000/${devProject}/tasks:${devTag} \
 	  docker://${nexus_registry}/tasks:${devTag}"
           // TBD: Tag the built image with the production tag.
