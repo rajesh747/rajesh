@@ -73,6 +73,7 @@ podTemplate(
 	      echo "Running Code Analysis"
 	      sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${sonar_svc} -Dsonar.projectName=${JOB_BASE_NAME} -Dsonar.projectVersion=${devTag}"
 	    }
+	  )
 	}
 //	parallel {
 //	  stage ("Unit Tests") {
