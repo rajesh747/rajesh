@@ -182,6 +182,7 @@ podTemplate(
 	      openshift.apply(dc)
 	      openshift.selector("configmap", "${destApp}-config").delete()
 	      def configmap = openshift.create("configmap", "${destApp}-config", "--from-file=./configuration/application-users.properties", "--from-file=./configuration/application-roles.properties" )
+	      openshift.set("env dc/${destApp} VERSION='${prodTag} (tasks-prod)' -n ${GUID}-tasks-prod")
 	      openshift.selector("dc", "${destApp}").rollout().latest();
 	      def dc_prod = openshift.selector("dc", "${destApp}").object()
               def dc_version = dc_prod.status.latestVersion
