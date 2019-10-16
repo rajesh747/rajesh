@@ -7,10 +7,10 @@ podTemplate(
     containerTemplate(
       name: "jnlp",
       image: "docker-registry.default.svc:5000/${GUID}-jenkins/jenkins-agent-appdev",
-      resourceRequestMemory: "512Mi",
-      resourceLimitMemory: "1Gi",
+      resourceRequestMemory: "1Gi",
+      resourceLimitMemory: "2Gi",
       resourceRequestCpu: "1",
-      resourceLimitCpu: "1"
+      resourceLimitCpu: "2"
     )
   ]
 ) {
