@@ -121,8 +121,6 @@ podTemplate(
               openshift.selector('configmap', 'tasks-config').delete()
 	      def configmap = openshift.create('configmap', 'tasks-config', '--from-file=./configuration/application-users.properties', '--from-file=./configuration/application-roles.properties' )
 	      // Deploy the development application.
-              sh "oc set probe dc/tasts --liveness --failure-threshold 3 --initial-delay-seconds 60 -- echo ok"
-              sh "oc set probe dc/tasks --readiness --failure-threshold 3 --initial-delay-seconds 60 --get-url=http://:80/"
               openshift.selector("dc", "tasks").rollout().latest();
 
               // Wait for application to be deployed
@@ -183,8 +181,6 @@ podTemplate(
 	      openshift.apply(dc)
 	      openshift.selector("configmap", "${destApp}-config").delete()
 	      def configmap = openshift.create("configmap", "${destApp}-config", "--from-file=./configuration/application-users.properties", "--from-file=./configuration/application-roles.properties" )
-	      sh "oc set probe dc/${destApp} --liveness --failure-threshold 3 --initial-delay-seconds 60 -- echo ok"
-	      sh "oc set probe dc/${destApp} --readiness --failure-threshold 3 --initial-delay-seconds 60 --get-url=http://:80/"
 	      openshift.selector("dc", "${destApp}").rollout().latest();
 	      def dc_prod = openshift.selector("dc", "${destApp}").object()
               def dc_version = dc_prod.status.latestVersion
