@@ -20,8 +20,6 @@ oc new-app jenkins-persistent \
 	--param DISABLE_ADMINISTRATIVE_MONITORS=true \
 	-n ${GUID}-jenkins
 
-#        --env JENKINS_JAVA_OVERRIDES="-Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=300
-
 oc set resources dc jenkins --limits=memory=2Gi,cpu=2 --requests=memory=1Gi,cpu=1 -n ${GUID}-jenkins
 
 # Create custom agent container image with skopeo
@@ -38,8 +36,7 @@ oc new-build ${REPO} \
 	--name=tasks-pipeline \
 	--context-dir=openshift-tasks \
 	--strategy=pipeline \
-	--env GUID=${GUID} --env REPO=${REPO} \
-	--env CLUSTER=${CLUSTER} \
+	--env GUID=${GUID} --env REPO=${REPO} --env CLUSTER=${CLUSTER} \
 	-n ${GUID}-jenkins
 
 # Make sure that Jenkins is fully up and running before proceeding!
