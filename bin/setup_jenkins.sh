@@ -16,13 +16,13 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 oc new-app jenkins-persistent \
 	--param ENABLE_OAUTH=true \
 	--param MEMORY_LIMIT=4Gi \
-	--param VOLUME_CAPACITY=5Gi \
+	--param VOLUME_CAPACITY=4Gi \
 	--param DISABLE_ADMINISTRATIVE_MONITORS=true \
 	-n ${GUID}-jenkins
 
 #        --env JENKINS_JAVA_OVERRIDES="-Dhudson.slaves.NodeProvisioner.initialDelay=0 -Dhudson.slaves.NodeProvisioner.MARGIN=50 -Dhudson.slaves.NodeProvisioner.MARGIN0=0.85 -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL=300
 
-oc set resources dc jenkins --limits=memory=4Gi,cpu=2 --requests=memory=4Gi,cpu=2 -n ${GUID}-jenkins
+oc set resources dc jenkins --limits=memory=2Gi,cpu=2 --requests=memory=1Gi,cpu=1 -n ${GUID}-jenkins
 
 # Create custom agent container image with skopeo
 oc new-build  -D $'FROM docker.io/openshift/jenkins-agent-maven-35-centos7:v3.11\n
