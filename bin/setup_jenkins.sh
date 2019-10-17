@@ -62,7 +62,7 @@ items:
           value: ${REPO}
         - name: "CLUSTER"
           value: ${CLUSTER}
-  triggers []
+    triggers []
 kind: List
 metadata: []" | oc create -f - -n ${GUID}-jenkins
 
