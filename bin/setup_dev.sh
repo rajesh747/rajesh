@@ -29,4 +29,4 @@ oc set probe dc/tasks --liveness --get-url=http://:8080/ --initial-delay-seconds
 oc set env dc/tasks VERSION='0.0 (tsks-dev)' -n ${GUID}-tasks-dev
 
 # tune dc resources to speed up deployment
-oc set resources dc tasks --limits=memory=2Gi,cpu=2 --requests=memory=1Gi,cpu=1 -n ${GUID}-tasks-dev
+oc set resources dc tasks --limits=memory=1Gi,cpu=1 --requests=memory=1Gi,cpu=1 -n ${GUID}-tasks-dev

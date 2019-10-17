@@ -40,8 +40,8 @@ oc set probe dc/tasks-green --liveness --get-url=http://:8080/ --initial-delay-s
 oc set env dc/tasks-green VERSION='0.0 (tsks-green)' -n ${GUID}-tasks-prod
 
 # Tune dc resources
-oc set resources dc tasks-blue --limits=memory=4Gi,cpu=2 --requests=memory=2Gi,cpu=1 -n ${GUID}-tasks-prod
-oc set resources dc tasks-green --limits=memory=4Gi,cpu=2 --requests=memory=2Gi,cpu=1 -n ${GUID}-tasks-prod
+oc set resources dc tasks-blue --limits=memory=2Gi,cpu=1 --requests=memory=2Gi,cpu=1 -n ${GUID}-tasks-prod
+oc set resources dc tasks-green --limits=memory=2Gi,cpu=1 --requests=memory=2Gi,cpu=1 -n ${GUID}-tasks-prod
 
 # Expose Blue service as route to make green application active
 oc expose svc/tasks-green --name tasks -n ${GUID}-tasks-prod
