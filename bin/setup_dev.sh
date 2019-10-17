@@ -27,3 +27,6 @@ oc set probe dc/tasks --liveness --get-url=http://:8080/ --initial-delay-seconds
 
 # Setting 'wrong' VERSION. This will need to be updated in the pipeline
 oc set env dc/tasks VERSION='0.0 (tsks-dev)' -n ${GUID}-tasks-dev
+
+# tune dc resources to speed up deployment
+oc set resources dc tasks-green --limits=memory=2Gi,cpu=2 --requests=memory=1Gi,cpu=1 -n ${GUID}-tasks-prod
