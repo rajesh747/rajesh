@@ -1,5 +1,5 @@
 #!/bin/bash
-# Delete all Homework Projects
+# Delete all Homework Project
 if [ "$#" -ne 1 ]; then
     echo "Usage:"
     echo "  $0 GUID"
